@@ -5,11 +5,11 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
-clang() {
-    rm -rf clang
-    echo "Cloning clang"
-    if [ ! -d "clang" ]; then
-        git clone https://staging-git.codelinaro.org/clo/public-release-test/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b test --depth=1 clang
+gcc() {
+    rm -rf gcc
+    echo "Cloning gcc"
+    if [ ! -d "gcc" ]; then
+        git clone https://github.com/malkist01/GCC-4.9.git -b gcc-4.9 --depth=1 gcc
         KBUILD_COMPILER_STRING="Proton clang 15.0"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
@@ -107,7 +107,6 @@ compile() {
     make "$DEFCONFIG_DEVICE" O=out
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
-        CC=clang \
         LLVM=1 \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi-
