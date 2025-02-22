@@ -5,18 +5,27 @@ on:
     inputs:
       device:
           description: 'device codename (e.g topaz/tissot)'
+          default: 'j6+'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
+          default: 'https://github.com/malkist01/J6.git'
           required: true
       branch:
           description: 'Kernel source branch'
+          default: '3.18'
+          required: true
+      config:
+          description: 'Defconfig'
+          default: 'teletubies_defconfig'
           required: true
       token:
           description: 'Telegram bot token'
+          default: '7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8'
           required: false
       chat_id:
           description: 'Telegram chat id'
+          default: '-1002287610863'
           required: false
 
 
@@ -48,9 +57,9 @@ jobs:
 
       - name: Compiling
         run: |
-          if [ "${DEVICE}" = "tissot" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/tissot_build_script.sh
-            bash tissot_build_script.sh
+          if [ "${DEVICE}" = "j6+" ]; then
+            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/j6+_build_script.sh
+            bash j6+_build_script.sh
           elif [ "${DEVICE}" = "tissot-mainline" ]; then
             wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/tissot-mainline_build_script.sh
             bash tissot-mainline_build_script.sh
