@@ -32,7 +32,7 @@ KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
 DEVICE="samsung"
 export DEVICE
-CODENAME="j6+"
+CODENAME="j6prime"
 export CODENAME
 # DEFCONFIG=""
 #DEFCONFIG_COMMON="vendor/msm8953-romi_defconfig"
