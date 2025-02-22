@@ -58,7 +58,7 @@ jobs:
       - name: Compiling
         run: |
           if [ "${DEVICE}" = "j6prime" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/j6prime_build_script.sh
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/j6prime_build_script.sh
             bash j6prime_build_script.sh
           else
             echo "Device not supported yet"
