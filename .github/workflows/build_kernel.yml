@@ -5,7 +5,7 @@ on:
     inputs:
       device:
           description: 'device codename (e.g topaz/tissot)'
-          default: 'j6+'
+          default: 'j6prime'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
@@ -57,18 +57,9 @@ jobs:
 
       - name: Compiling
         run: |
-          if [ "${DEVICE}" = "j6+" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/j6+_build_script.sh
-            bash j6+_build_script.sh
-          elif [ "${DEVICE}" = "tissot-mainline" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/tissot-mainline_build_script.sh
-            bash tissot-mainline_build_script.sh
-          elif [ "${DEVICE}" = "topaz" ]; then 
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/topaz_build_script.sh
-            bash topaz_build_script.sh
-          elif [ "${DEVICE}" = "sweet" ]; then
-            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/sweet_build_script.sh
-            bash sweet_build_script.sh
+          if [ "${DEVICE}" = "j6prime" ]; then
+            wget https://raw.githubusercontent.com/sirnewbies/kernel_build_action/main/scripts/j6prime_build_script.sh
+            bash j6prime_build_script.sh
           else
             echo "Device not supported yet"
           fi
