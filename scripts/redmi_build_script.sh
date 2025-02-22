@@ -3,9 +3,9 @@
 # Dependencies
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel
-cd kernel
 git cherry-pick v4.9.327..v4.9.337
 git merge v4.9.337
+cd kernel
 
 clang() {
     rm -rf clang
