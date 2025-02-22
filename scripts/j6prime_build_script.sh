@@ -10,7 +10,7 @@ gcc() {
     echo "Cloning gcc"
     if [ ! -d "gcc" ]; then
         git clone https://staging-git.codelinaro.org/clo/public-release-test/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b test --depth=1 gcc
-        KBUILD_COMPILER_STRING="Gcc 15.0"
+        KBUILD_COMPILER_STRING=""
         PATH="${PWD}/gcc/bin:${PATH}"
     fi
     sudo apt install -y ccache
@@ -107,9 +107,8 @@ compile() {
     make "$DEFCONFIG_DEVICE" O=out
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
-        LLVM=1 \
-        CROSS_COMPILE=aarch64-linux-android- \
-        CROSS_COMPILE_ARM32=arm-linux-androideabi-
+        CROSS_COMPILE=aarch64-linux-android-4.9- \
+        CROSS_COMPILE_ARM32=arm-linux-androideabi-4.9-
 
     if ! [ -a "$IMAGE" ]; then
         finderr
