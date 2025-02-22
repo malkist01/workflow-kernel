@@ -5,13 +5,13 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
-gcc() {
-    rm -rf gcc
-    echo "Cloning gcc"
-    if [ ! -d "gcc" ]; then
+clang() {
+    rm -rf clang
+    echo "Cloning clang"
+    if [ ! -d "clang" ]; then
         git clone https://staging-git.codelinaro.org/clo/public-release-test/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b test --depth=1 gcc
         KBUILD_COMPILER_STRING=""
-        PATH="${PWD}/gcc/bin:${PATH}"
+        PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
     echo "Done"
@@ -30,9 +30,9 @@ KBUILD_BUILD_HOST="tsel"
 export KBUILD_BUILD_HOST
 KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
-DEVICE="samsung"
+DEVICE="Redmi"
 export DEVICE
-CODENAME="j6prime"
+CODENAME="mi"
 export CODENAME
 # DEFCONFIG=""
 #DEFCONFIG_COMMON="vendor/msm8953-romi_defconfig"
@@ -107,6 +107,7 @@ compile() {
     make "$DEFCONFIG_DEVICE" O=out
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
+        CC=clang \
         CROSS_COMPILE=aarch64-linux-android-4.9- \
         CROSS_COMPILE_ARM32=arm-linux-androideabi-4.9-
 
