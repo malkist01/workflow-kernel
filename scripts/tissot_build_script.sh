@@ -26,17 +26,17 @@ export CACHE
 export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="romi.yusna"
+KBUILD_BUILD_HOST="tsel"
 export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="orion-server"
+KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
-DEVICE="Xiaomi Mi A1"
+DEVICE="samsung"
 export DEVICE
-CODENAME="tissot"
+CODENAME="j6prime"
 export CODENAME
 # DEFCONFIG=""
 #DEFCONFIG_COMMON="vendor/msm8953-romi_defconfig"
-DEFCONFIG_DEVICE="vendor/tissot_defconfig"
+DEFCONFIG_DEVICE="teletubies_defconfig"
 #export DEFCONFIG_COMMON
 export DEFCONFIG_DEVICE
 COMMIT_HASH=$(git rev-parse --short HEAD)
@@ -117,7 +117,7 @@ compile() {
         exit 1
     fi
 
-    git clone --depth=1 https://github.com/romiyusnandar/Anykernel3.git AnyKernel -b tissot
+    git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel -b tissot
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
