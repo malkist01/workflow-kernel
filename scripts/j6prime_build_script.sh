@@ -10,8 +10,8 @@ gcc() {
     echo "Cloning gcc"
     if [ ! -d "gcc" ]; then
         git clone https://github.com/malkist01/GCC-4.9.git -b gcc-4.9 --depth=1 gcc
-        KBUILD_COMPILER_STRING="Proton clang 15.0"
-        PATH="${PWD}/clang/bin:${PATH}"
+        KBUILD_COMPILER_STRING="Gcc 15.0"
+        PATH="${PWD}/gcc/bin:${PATH}"
     fi
     sudo apt install -y ccache
     echo "Done"
