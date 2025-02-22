@@ -5,7 +5,7 @@ on:
     inputs:
       device:
           description: 'device codename (e.g topaz/tissot)'
-          default: 'mi'
+          default: 'Redmi'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
