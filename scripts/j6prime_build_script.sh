@@ -9,7 +9,7 @@ gcc() {
     rm -rf gcc
     echo "Cloning gcc"
     if [ ! -d "gcc" ]; then
-        git clone https://github.com/malkist01/GCC-4.9.git -b gcc-4.9 --depth=1 gcc
+        git clone https://staging-git.codelinaro.org/clo/public-release-test/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b test --depth=1 gcc
         KBUILD_COMPILER_STRING="Gcc 15.0"
         PATH="${PWD}/gcc/bin:${PATH}"
     fi
@@ -108,8 +108,8 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         LLVM=1 \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+        CROSS_COMPILE=aarch64-linux-android- \
+        CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
     if ! [ -a "$IMAGE" ]; then
         finderr
