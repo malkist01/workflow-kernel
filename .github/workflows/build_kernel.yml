@@ -5,7 +5,7 @@ on:
     inputs:
       device:
           description: 'device codename (e.g topaz/tissot)'
-          default: 'j6prime'
+          default: 'mi'
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
@@ -57,9 +57,9 @@ jobs:
 
       - name: Compiling
         run: |
-          if [ "${DEVICE}" = "j6prime" ]; then
-            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/j6prime_build_script.sh
-            bash j6prime_build_script.sh
+          if [ "${DEVICE}" = "redmi" ]; then
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/redmi_build_script.sh
+            bash redmi_build_script.sh
           else
             echo "Device not supported yet"
           fi
