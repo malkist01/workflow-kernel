@@ -57,7 +57,7 @@ jobs:
 
       - name: Compiling
         run: |
-          if [ "${DEVICE}" = "redmi" ]; then
+          if [ "${DEVICE}" = "Redmi" ]; then
             wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/redmi_build_script.sh
             bash redmi_build_script.sh
           else
