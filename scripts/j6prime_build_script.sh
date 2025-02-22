@@ -107,6 +107,7 @@ compile() {
     make "$DEFCONFIG_DEVICE" O=out
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
+        CC=clang \
         LLVM=1 \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi-
