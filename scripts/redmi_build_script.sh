@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://gitlab.com/kutemeikito/rastamod69-clang  -b clang-20.0 --depth=1 gcc
+        git clone https://gitlab.com/kutemeikito/rastamod69-clang  -b clang-20.0 --depth=1 clang
         KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
@@ -108,15 +108,15 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         CC=clang \
-	    LD=ld.lld \
-		AR=llvm-ar \
-		AS=llvm-as \
-	    NM=llvm-nm \
-	    OBJCOPY=llvm-objcopy \
-	    OBJDUMP=llvm-objdump \
-	    STRIP=llvm-strip \
-	    CROSS_COMPILE=aarch64-linux-android- \
-	    CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
+        LD=ld.lld \
+	AR=llvm-ar \
+	AS=llvm-as \
+	NM=llvm-nm \
+	OBJCOPY=llvm-objcopy \
+	OBJDUMP=llvm-objdump \
+	STRIP=llvm-strip \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
      	CLANG_TRIPLE=aarch64-linux-gnu- \
 
     if ! [ -a "$IMAGE" ]; then
