@@ -3,15 +3,13 @@
 # Dependencies
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel
-git cherry-pick v4.9.327..v4.9.337
-git merge v4.9.337
 cd kernel
 
 clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://gitlab.com/kutemeikito/rastamod69-clang  -b clang-20.0 --depth=1 clang
+        git clone https://gitlab.com/clangsantoni/zyc_clang.git  -b 21 --depth=1 clang
         KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
