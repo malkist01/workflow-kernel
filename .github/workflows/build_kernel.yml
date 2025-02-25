@@ -45,8 +45,8 @@ jobs:
     steps:
       - name: Initializing environment
         run: |
-          git config --global user.name "sirnewbies"
-          git config --global user.email "yusromi04@gmail.com"
+          git config --global user.name "malkist01"
+          git config --global user.email "aripujiyanto0812@gmail.com"
           df -h
           ld --version
           gcc -v
