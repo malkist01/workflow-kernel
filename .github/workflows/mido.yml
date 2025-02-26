@@ -1,4 +1,4 @@
-name: Build Kernel
+name: MidoKernel
 
 on:
   workflow_dispatch:
