@@ -5,6 +5,8 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
+git submodule add https://github.com/tiann/KernelSU.git && cd drivers && ln -sf ../KernelSU/kernel kernelsu && cd ..
+
 curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
 
 echo "Cloning dependencies"
