@@ -10,7 +10,6 @@ clang() {
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
         git clone https://gitlab.com/clangsantoni/zyc_clang.git  -b 21 --depth=1 clang
-        KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
@@ -23,10 +22,9 @@ START=$(date +"%s")
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
-export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-KBUILD_BUILD_HOST="tsel"
+KBUILD_BUILD_HOST="android-server"
 export KBUILD_BUILD_HOST
 KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_USER
