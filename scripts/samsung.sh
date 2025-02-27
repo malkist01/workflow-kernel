@@ -16,6 +16,7 @@ START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 KERNEL_DIR=$(pwd)
 export ARCH=arm64
+export KBUILD_COMPILER_STRING
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 DEVICE="samsung"
