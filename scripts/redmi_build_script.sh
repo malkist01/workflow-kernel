@@ -5,6 +5,10 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
+git submodule add https://github.com/tiann/KernelSU
+
+curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
+
 clang() {
     rm -rf clang
     echo "Cloning clang"
