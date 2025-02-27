@@ -10,7 +10,6 @@ clang() {
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
         git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror--depth=1 clang
-        KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
     sudo apt install -y ccache
