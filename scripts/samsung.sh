@@ -5,14 +5,12 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
-git submodule add https://github.com/tiann/KernelSU.git && cd drivers && ln -sf ../KernelSU/kernel kernelsu && cd ..
-
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
-
 echo "Cloning dependencies"
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -75,7 +73,9 @@ function finerr() {
 # Compile plox
 function compile() {
         make -s -C $(pwd) O=out teletubies_defconfig
-        make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
+        make -C $(pwd) CROSS_COMPILE=${GCC}
+        make -C $(pwd) CROSS_COMPILE=${GCC32}
+O=out -j32 -l32 2>&1| tee build.log
         
     if ! [ -a "$IMAGE" ]; then
         finderr
