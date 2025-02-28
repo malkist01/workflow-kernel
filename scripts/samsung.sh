@@ -4,7 +4,7 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
-
+curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s v1.0.5
 echo "Cloning dependencies"
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
@@ -26,7 +26,7 @@ export CODENAME
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-                        -d sticker="CAADBQADJgEAAkMQsyKKVBNIRBu80wI" \
+                        -d sticker="CAACAgUAAxkBAAMPXvdff5azEK_7peNplS4ywWcagh4AAgwBAALQuClVMBjhY" \
                         -d chat_id=$chat_id
 }
 # Send info plox channel
