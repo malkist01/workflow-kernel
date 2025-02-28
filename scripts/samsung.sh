@@ -6,7 +6,7 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 
 echo "Cloning dependencies"
-git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 --depth=1 gcc
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b gcc9-20190401 --depth=1 gcc
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
