@@ -9,7 +9,7 @@ echo "Cloning dependencies"
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 --depth=1 gcc
 git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
