@@ -5,10 +5,9 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone git clone https://github.com/malkist01/gnu_gcc-13.git -b main --depth=1 gcc
-git clone https://github.com/Sepatu-Bot/gcc-arm.git -b gcc-master --depth=1 gcc32
+git clone git clone https://github.com/rajatgupta1998/platform_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b gcc-4.9-linaro --depth=1 gcc
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-non-elf-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc/bin/arm-non-eabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
