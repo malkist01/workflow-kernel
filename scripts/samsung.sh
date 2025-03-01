@@ -5,15 +5,19 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone git clone https://github.com/rajatgupta1998/platform_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b gcc-4.9-linaro --depth=1 gcc
-echo "Done"
-GCC="$(pwd)/gcc/aarch64-linux-android-"
-GCC32="$(pwd)/gcc/arm-non-eabi-"
+git clone git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-9.3.git -b lineage-22.1 --depth=1 gcc
+PATH="${PWD}/gcc/bin:${PATH}"
+echo "done"
+PROCS=$(nproc --all)
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 KERNEL_DIR=$(pwd)
-export ARCH=arm64
+ARCH=arm64
+export ARCH
+export CODENAME
+DEFCONFIG="teletubies_defconfig"
+export DEFCONFIG
 export USE_CCACHE=1
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
@@ -70,18 +74,20 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        make -s -C $(pwd) O=out teletubies_defconfig
-		              CC="gcc" \
-	                      AR=ar \
-	                      NM=nm \
-	                      STRIP=strip \
-	                      OBJCOPY=objcopy \
-	                      OBJDUMP=objdump \
-	                      READELF=readelf \
-	                      HOSTCC=gcc \
-	                      HOSTCXX=g++ \
-        make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}" O=out -j32 -l32 2>&1| tee build.log
-        
+    make O=out ARCH="${ARCH}" "${DEFCONFIG}"
+    make -j"${PROCS}" O=out \
+        ARCH=arm64 \
+        AR=ar \
+        NM=nm \
+        OBJCOPY=objcopy \
+        OBJDUMP=objdump \
+        STRIP=strip \
+        CC=gcc \
+        CROSS_COMPILE=aarch64-linux-gnu- \
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi
+	CONFIG_DEBUG_SECTION_MISMATCH=y \
+        CONFIG_NO_ERROR_ON_MISMATCH=y   2>&1 | tee error.log
+	
     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
