@@ -22,7 +22,7 @@ START=$(date +"%s")
 KERNEL_DIR=$(pwd)
 CACHE=1
 export CACHE
-export KBUILD_COMPILER_STRING
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 ARCH=arm64
 export ARCH
 KBUILD_BUILD_HOST="android-server"
@@ -102,21 +102,8 @@ compile() {
     fi
 
     make O=out ARCH="${ARCH}"
-    make "$DEFCONFIG_COMMON" O=out
-    make "$DEFCONFIG_DEVICE" O=out
-    make -j"${PROCS}" O=out \
-        ARCH=$ARCH \
-        CC=gcc \
-        LD=ld.lld \
-	AR=llvm-ar \
-	AS=llvm-as \
-	NM=llvm-nm \
-	OBJCOPY=llvm-objcopy \
-	OBJDUMP=llvm-objdump \
-	STRIP=llvm-strip \
-	CROSS_COMPILE=aarch64-linux-android- \
-	CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-     	CLANG_TRIPLE=aarch64-linux-gnu- \
+    make -s -C $(pwd) O=out teletubies_defconfig
+    make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
 
     if ! [ -a "$IMAGE" ]; then
         finderr
