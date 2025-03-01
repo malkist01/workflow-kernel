@@ -5,106 +5,67 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 
-gcc() {
-    rm -rf gcc
-    echo "Cloning gcc"
-    if [ ! -d "gcc" ]; then
-        git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror -b linaro8-20190402 --depth=1 gcc
-        PATH="${PWD}/gcc/bin:${PATH}"
-    fi
-    sudo apt install -y ccache
-    echo "Done"
-}
-
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-DATE=$(date +"%Y%m%d-%H%M")
+echo "Cloning dependencies"
+git clone https://github.com/kdrag0n/aarch64-elf-gcc -b 9.x --depth=1 gcc
+echo "Done"
+GCC="$(pwd)/gcc/bin/aarch64-elf-"
+tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
-KERNEL_DIR=$(pwd)
-CACHE=1
-export CACHE
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
-ARCH=arm64
-export ARCH
-KBUILD_BUILD_HOST="android-server"
-export KBUILD_BUILD_HOST
-KBUILD_BUILD_USER="malkist"
-export KBUILD_BUILD_USER
-DEVICE="samsung"
-export DEVICE
-CODENAME="j6primelte"
-export CODENAME
-# DEFCONFIG=""
-#DEFCONFIG_COMMON="vendor/msm8953-romi_defconfig"
-DEFCONFIG_DEVICE="teletubies_defconfig"
-#export DEFCONFIG_COMMON
-export DEFCONFIG_DEVICE
-COMMIT_HASH=$(git rev-parse --short HEAD)
-export COMMIT_HASH
-PROCS=$(nproc --all)
-export PROCS
-STATUS=STABLE
-export STATUS
-source "${HOME}"/.bashrc && source "${HOME}"/.profile
-if [ $CACHE = 1 ]; then
-    ccache -M 100G
-    export USE_CCACHE=1
-fi
-LC_ALL=C
-export LC_ALL
-
-tg() {
-    curl -sX POST https://api.telegram.org/bot"${token}"/sendMessage -d chat_id="${chat_id}" -d parse_mode=Markdown -d disable_web_page_preview=true -d text="$1" &>/dev/null
+export ARCH=arm64
+export KBUILD_BUILD_USER=malkist
+export KBUILD_BUILD_HOST=android
+# sticker plox
+function sticker() {
+        curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
+                        -d sticker="CAADBQADJgEAAkMQsyKKVBNIRBu80wI" \
+                        -d chat_id=$chat_id
 }
-
-tgs() {
-    MD5=$(md5sum "$1" | cut -d' ' -f1)
-    curl -fsSL -X POST -F document=@"$1" https://api.telegram.org/bot"${token}"/sendDocument \
-        -F "chat_id=${chat_id}" \
-        -F "parse_mode=Markdown" \
-        -F "caption=$2 | *MD5*: \`$MD5\`"
+# Send info plox channel
+function sendinfo() {
+        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+                        -d chat_id=$chat_id \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="<b>ChipsKernel CAF</b> CI Triggered%0ABuild started on <code>Drone CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A/5A (Rolex/Riva)</b>%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Stable"
 }
-
-# Send Build Info
-sendinfo() {
-    tg "
-• sirCompiler Action •
-*Building on*: \`Github actions\`
-*Date*: \`${DATE}\`
-*Device*: \`${DEVICE} (${CODENAME})\`
-*Branch*: \`$(git rev-parse --abbrev-ref HEAD)\`
-*Last Commit*: [${COMMIT_HASH}](${REPO}/commit/${COMMIT_HASH})
-*Compiler*: \`${KBUILD_COMPILER_STRING}\`
-*Build Status*: \`${STATUS}\`"
+# Send private info
+function sendpriv() {
+        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+                        -d chat_id=$priv_id \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="ChipsKernel CI Started%0ADrone triggered by: <code>${DRONE_BUILD_EVENT}</code> event%0AJob name: <code>Baking</code>%0ACommit point: <a href='${DRONE_COMMIT_LINK}'>$(git log --pretty=format:'"%h : %s"' -1)</a>%0A<b>Pipeline jobs</b> <a href='https://cloud.drone.io/najahiiii/moaikernal/${DRONE_BUILD_NUMBER}'>here</a>"
 }
-
 # Push kernel to channel
-push() {
-    cd AnyKernel || exit 1
-    ZIP=$(echo *.zip)
-    tgs "${ZIP}" "Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s). | For *${DEVICE} (${CODENAME})* | ${KBUILD_COMPILER_STRING}"
+function push() {
+        cd AnyKernel
+	ZIP=$(echo *.zip)
+	curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
+			-F chat_id="$chat_id" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=html" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Xiaomi Redmi 4A/5A (Rolex/Riva)</b> | <a href='${HASIL}'>Logs</a>"
 }
-
-# Catch Error
-finderr() {
-    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-        -d chat_id="$chat_id" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=markdown" \
-        -d text="Build throw an error(s)"
-    exit 1
+# Function upload logs to my own server paste
+function paste() {
+        cat build.log | curl -F 'chips=<-' https://chipslogs.herokuapp.com > link
+        HASIL="$(cat link)"
 }
-
-# Compile
-compile() {
-
-    if [ -d "out" ]; then
-        rm -rf out && mkdir -p out
-    fi
-
-    make O=out ARCH="${ARCH}"
-    make -s -C $(pwd) O=out teletubies_defconfig
-    make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
-
+# Fin Error
+function finerr() {
+	paste
+        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+			-d chat_id="$chat_id" \
+			-d "disable_web_page_preview=true" \
+			-d "parse_mode=markdown" \
+			-d text="Job Baking Chips throw an error(s) | **Build logs** [here](${HASIL})"
+        exit 1
+}
+# Compile plox
+function compile() {
+        make -s -C $(pwd) O=out rolex_defconfig
+        make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
@@ -116,14 +77,14 @@ compile() {
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Teletubies-"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 kernel-testing-"${BRANCH}"-"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
-
-gcc
+sticker
+sendpriv
 sendinfo
 compile
 zipping
 END=$(date +"%s")
-DIFF=$((END - START))
+DIFF=$(($END - $START))
 push
