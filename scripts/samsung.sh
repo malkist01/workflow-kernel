@@ -5,7 +5,7 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone https://staging-git.codelinaro.org/clo/public-release-test/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b test --depth=1 gcc
+git clone https://git.halogenos.org/halogenOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b XOS-15.1 --depth=1 gcc
 git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git -b lineage-19.1 --depth=1 gcc32
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
