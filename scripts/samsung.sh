@@ -5,11 +5,11 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone git clone https://github.com/GrowtopiaJaw/aarch64-linux-android-4.9.git -b linaro --single-branch gcc-linaro-4.9.4-2017.01-x86_64_aarch64-elf --depth=1 gcc
+git clone git clone https://github.com/malkist01/gnu_gcc-13.git -b main --depth=1 gcc
 git clone https://github.com/Sepatu-Bot/gcc-arm.git -b gcc-master --depth=1 gcc32
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-elf-"
-GCC32="$(pwd)/gcc32/bin/arm-eabi-"
+GCC="$(pwd)/gcc/bin/aarch64-non-elf-"
+GCC32="$(pwd)/gcc/bin/arm-non-eabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
