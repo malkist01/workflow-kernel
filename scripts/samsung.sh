@@ -7,8 +7,8 @@ cd kernel
 echo "Cloning dependencies"
 git clone git clone https://github.com/rajatgupta1998/platform_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b gcc-4.9-linaro --depth=1 gcc
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
-GCC32="$(pwd)/gcc/bin/arm-non-eabi-"
+GCC="$(pwd)/gcc/aarch64-linux-android-"
+GCC32="$(pwd)/gcc/arm-non-eabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
