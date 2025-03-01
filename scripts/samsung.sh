@@ -5,11 +5,11 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone https://github.com/malkist01/gcc-linaro-6.5.0.git -b master --depth=1 gcc
-git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git -b lineage-19.1 --depth=1 gcc32
+git clone https://github.com/Sepatu-Bot/arm64-gcc.git -b gcc-master --depth=1 gcc
+git clone https://github.com/Sepatu-Bot/gcc-arm.git -b gcc-master --depth=1 gcc32
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+GCC="$(pwd)/gcc/bin/aarch64-elf-"
+GCC32="$(pwd)/gcc32/bin/arm-eabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
