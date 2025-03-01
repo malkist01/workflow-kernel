@@ -9,8 +9,7 @@ gcc() {
     rm -rf gcc
     echo "Cloning gcc"
     if [ ! -d "gcc" ]; then
-        git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 --depth=1 gcc
-        KBUILD_COMPILER_STRING=""
+        git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror -b linaro8-20190402 --depth=1 gcc
         PATH="${PWD}/gcc/bin:${PATH}"
     fi
     sudo apt install -y ccache
