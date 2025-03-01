@@ -4,96 +4,121 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
+
+gcc() {
     rm -rf gcc
     echo "Cloning gcc"
-    
-  git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-9.3.git -b lineage-22.1 --depth=1 gcc
-        
-	PATH="${PWD}/gcc/bin:${PATH}"
-	
+    if [ ! -d "gcc" ]; then
+        git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 --depth=1 gcc
+        KBUILD_COMPILER_STRING=""
+        PATH="${PWD}/gcc/bin:${PATH}"
+    fi
     sudo apt install -y ccache
     echo "Done"
-    
-PROCS=$(nproc --all)
-tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
-START=$(date +"%s")
+}
+
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+DATE=$(date +"%Y%m%d-%H%M")
+START=$(date +"%s")
 KERNEL_DIR=$(pwd)
+CACHE=1
+export CACHE
+export KBUILD_COMPILER_STRING
 ARCH=arm64
 export ARCH
-export CODENAME
-DEFCONFIG="teletubies_defconfig"
-export DEFCONFIG
-export USE_CCACHE=1
-export KBUILD_BUILD_USER=malkist
-export KBUILD_BUILD_HOST=android
+KBUILD_BUILD_HOST="android-server"
+export KBUILD_BUILD_HOST
+KBUILD_BUILD_USER="malkist"
+export KBUILD_BUILD_USER
 DEVICE="samsung"
 export DEVICE
 CODENAME="j6primelte"
 export CODENAME
-# sticker plox
-function sticker() {
-        curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-                        -d sticker="CAACAgUAAxkBAAMPXvdff5azEK_7peNplS4ywWcagh4AAgwBAALQuClVMBjhY" \
-                        -d chat_id=$chat_id
+# DEFCONFIG=""
+#DEFCONFIG_COMMON="vendor/msm8953-romi_defconfig"
+DEFCONFIG_DEVICE="teletubies_defconfig"
+#export DEFCONFIG_COMMON
+export DEFCONFIG_DEVICE
+COMMIT_HASH=$(git rev-parse --short HEAD)
+export COMMIT_HASH
+PROCS=$(nproc --all)
+export PROCS
+STATUS=STABLE
+export STATUS
+source "${HOME}"/.bashrc && source "${HOME}"/.profile
+if [ $CACHE = 1 ]; then
+    ccache -M 100G
+    export USE_CCACHE=1
+fi
+LC_ALL=C
+export LC_ALL
+
+tg() {
+    curl -sX POST https://api.telegram.org/bot"${token}"/sendMessage -d chat_id="${chat_id}" -d parse_mode=Markdown -d disable_web_page_preview=true -d text="$1" &>/dev/null
 }
-# Send info plox channel
-function sendinfo() {
-        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-                        -d chat_id=$chat_id \
-                        -d "disable_web_page_preview=true" \
-                        -d "parse_mode=html" \
-                        -d text="<b>Teletubies</b> CI Triggered%0ABuild started on <code>Drone CI/CD</code>%0AFor device <b>Samsung J6primelte</b>%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 10-11)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Stable"
+
+tgs() {
+    MD5=$(md5sum "$1" | cut -d' ' -f1)
+    curl -fsSL -X POST -F document=@"$1" https://api.telegram.org/bot"${token}"/sendDocument \
+        -F "chat_id=${chat_id}" \
+        -F "parse_mode=Markdown" \
+        -F "caption=$2 | *MD5*: \`$MD5\`"
 }
-# Send private info
-function sendpriv() {
-        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-                        -d chat_id=$priv_id \
-                        -d "disable_web_page_preview=true" \
-                        -d "parse_mode=html" \
-                        -d text="Teletubies CI Started%0ADrone triggered by: <code>${DRONE_BUILD_EVENT}</code> event%0AJob name: <code>Baking</code>%0ACommit point: <a href='${DRONE_COMMIT_LINK}'>$(git log --pretty=format:'"%h : %s"' -1)</a>%0A<b>Pipeline jobs</b> <a href='https://cloud.drone.io/najahiiii/moaikernal/${DRONE_BUILD_NUMBER}'>here</a>"
+
+# Send Build Info
+sendinfo() {
+    tg "
+• sirCompiler Action •
+*Building on*: \`Github actions\`
+*Date*: \`${DATE}\`
+*Device*: \`${DEVICE} (${CODENAME})\`
+*Branch*: \`$(git rev-parse --abbrev-ref HEAD)\`
+*Last Commit*: [${COMMIT_HASH}](${REPO}/commit/${COMMIT_HASH})
+*Compiler*: \`${KBUILD_COMPILER_STRING}\`
+*Build Status*: \`${STATUS}\`"
 }
+
 # Push kernel to channel
-function push() {
-        cd AnyKernel
-	ZIP=$(echo *.zip)
-	curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-			-F chat_id="$chat_id" \
-			-F "disable_web_page_preview=true" \
-			-F "parse_mode=html" \
-			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Xiaomi Redmi 4A/5A (Rolex/Riva)</b> | <a href='${HASIL}'>Logs</a>"
+push() {
+    cd AnyKernel || exit 1
+    ZIP=$(echo *.zip)
+    tgs "${ZIP}" "Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s). | For *${DEVICE} (${CODENAME})* | ${KBUILD_COMPILER_STRING}"
 }
-# Function upload logs to my own server paste
-function paste() {
-        cat build.log | curl -F 'chips=<-' https://chipslogs.herokuapp.com > link
-        HASIL="$(cat link)"
+
+# Catch Error
+finderr() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$chat_id" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=markdown" \
+        -d text="Build throw an error(s)"
+    exit 1
 }
-# Fin Error
-function finerr() {
-	paste
-        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-			-d chat_id="$chat_id" \
-			-d "disable_web_page_preview=true" \
-			-d "parse_mode=markdown" \
-			-d text="Job Baking Chips throw an error(s) | **Build logs** [here](${HASIL})"
-        exit 1
-}
-# Compile plox
-function compile() {
-    make O=out ARCH="${ARCH}" "${DEFCONFIG}"
+
+# Compile
+compile() {
+
+    if [ -d "out" ]; then
+        rm -rf out && mkdir -p out
+    fi
+
+    make O=out ARCH="${ARCH}"
+    make "$DEFCONFIG_COMMON" O=out
+    make "$DEFCONFIG_DEVICE" O=out
     make -j"${PROCS}" O=out \
-        ARCH=arm64 \
-        AR=ar \
-        NM=nm \
-        OBJCOPY=objcopy \
-        OBJDUMP=objdump \
-        STRIP=strip \
+        ARCH=$ARCH \
         CC=gcc \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi
-	CONFIG_DEBUG_SECTION_MISMATCH=y \
-        CONFIG_NO_ERROR_ON_MISMATCH=y   2>&1 | tee error.log
-	
+        LD=ld.lld \
+	AR=llvm-ar \
+	AS=llvm-as \
+	NM=llvm-nm \
+	OBJCOPY=llvm-objcopy \
+	OBJDUMP=llvm-objdump \
+	STRIP=llvm-strip \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+     	CLANG_TRIPLE=aarch64-linux-gnu- \
+
     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
@@ -108,11 +133,11 @@ zipping() {
     zip -r9 Teletubies-"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
-sticker
-sendpriv
+
+gcc
 sendinfo
 compile
 zipping
 END=$(date +"%s")
-DIFF=$(($END - $START))
+DIFF=$((END - START))
 push
