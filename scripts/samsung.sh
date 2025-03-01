@@ -6,10 +6,14 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-echo "Cloning dependencies"
-git clone https://github.com/kdrag0n/aarch64-elf-gcc -b 9.x --depth=1 gcc
+echo "Cloning GCC"
+git clone git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-elf-"
+echo "Cloning GCC32"
+git clone git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
+echo "Done"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc/bin/arm-linux-androideabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
@@ -64,8 +68,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        make -s -C $(pwd) O=out rolex_defconfig
-        make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
+        make -s -C $(pwd) O=out teletubies_defconfig
+        make -C $(pwd) CROSS_COMPILE=${GCC} CROSS_COMPILE=${GCC32} O=out -j32 -l32 2>&1| tee build.log
     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
