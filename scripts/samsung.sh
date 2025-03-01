@@ -6,9 +6,9 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/najahiiii/priv-toolchains -b elf/gcc-10.0.0/arm --depth=1 gcc32
-git clone https://github.com/najahiiii/priv-toolchains -b elf/gcc-10.0.0/arm64 --depth=1 gcc
-git clone https://github.com/najahiiii/AnyKernel3.git -b asus --depth=1 AnyKernel
+git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 --depth=1 gcc
+git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git -b lineage-19.1 --depth=1 gcc32
+git clone https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -19,8 +19,8 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC="$(pwd)/gcc/bin/aarch64-elf-"
-GCC32="$(pwd)/gcc32/bin/arm-eabi-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
