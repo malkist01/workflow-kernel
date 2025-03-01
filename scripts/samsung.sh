@@ -6,11 +6,17 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+
 echo "Cloning GCC"
-git clone git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
+
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
+
 echo "Done"
+
 echo "Cloning GCC32"
-git clone git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
+
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
+
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc/bin/arm-linux-androideabi-"
