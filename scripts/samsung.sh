@@ -4,10 +4,16 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
-echo "Cloning dependencies"
-git clone git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-9.3.git -b lineage-22.1 --depth=1 gcc
-PATH="${PWD}/gcc/bin:${PATH}"
-echo "done"
+    rm -rf gcc
+    echo "Cloning gcc"
+    
+  git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-9.3.git -b lineage-22.1 --depth=1 gcc
+        
+	PATH="${PWD}/gcc/bin:${PATH}"
+	
+    sudo apt install -y ccache
+    echo "Done"
+    
 PROCS=$(nproc --all)
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
