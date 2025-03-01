@@ -5,16 +5,17 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone https://git.halogenos.org/halogenOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b XOS-15.1 --depth=1 gcc
+git clone https://github.com/malkist01/gcc-linaro-6.5.0.git -b master --depth=1 gcc
 git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git -b lineage-19.1 --depth=1 gcc32
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 KERNEL_DIR=$(pwd)
 export ARCH=arm64
+export USE_CCACHE=1
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 DEVICE="samsung"
