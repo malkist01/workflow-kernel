@@ -71,6 +71,16 @@ function finerr() {
 # Compile plox
 function compile() {
         make -s -C $(pwd) O=out teletubies_defconfig
+		              CC=gcc
+	                      AR=ar
+	                      NM=nm
+	                      STRIP=strip
+	                      OBJCOPY=objcopy
+	                      OBJDUMP=objdump
+	                      READELF=readelf
+	                      HOSTCC=gcc
+	                      HOSTCXX=g++
+	                      HOSTAR=llvm-ar \
         make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}" O=out -j32 -l32 2>&1| tee build.log
         
     if ! [ -a "$IMAGE" ]; then
