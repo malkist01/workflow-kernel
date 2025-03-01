@@ -5,7 +5,7 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel
 cd kernel
 echo "Cloning dependencies"
-git clone https://github.com/Sepatu-Bot/arm64-gcc.git -b gcc-master --depth=1 gcc
+git clone git clone https://github.com/GrowtopiaJaw/aarch64-linux-android-4.9.git -b linaro --single-branch gcc-linaro-4.9.4-2017.01-x86_64_aarch64-elf --depth=1 gcc
 git clone https://github.com/Sepatu-Bot/gcc-arm.git -b gcc-master --depth=1 gcc32
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-elf-"
