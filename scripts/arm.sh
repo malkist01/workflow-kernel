@@ -3,7 +3,7 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 echo "Cloning dependencies"
-git clone -q -j32 https://github.com/NusantaraDevs/clang.git --depth=1 -b 10.0 clang
+git clone -q -j32 https://github.com/Andromax-Devices/RastaMod69-Clang.git --depth=1 -b clang-12.0 clang
 git clone -q -j32 https://github.com/najahiiii/priv-toolchains.git --depth=1 -b non-elf/gcc-10.0.0/arm gcc32
 git clone -q -j32 https://github.com/najahiiii/priv-toolchains.git --depth=1 -b non-elf/gcc-10.0.0/arm64 gcc
 git clone -q -j32 https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
