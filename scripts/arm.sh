@@ -26,7 +26,7 @@ JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
 CC=clang
-export ARCH=arm64
+export ARCH=arm
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 # sticker plox
