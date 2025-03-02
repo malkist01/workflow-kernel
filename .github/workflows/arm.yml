@@ -9,28 +9,24 @@ on:
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
-          default: 'https://github.com/malkist01/J6.git'
+          default: 'https://github.com/ProjectMedusaAndroid/android_kernel_samsung_j4primelte_eas-3.18.git'
           required: true
       branch:
           description: 'Kernel source branch'
-          default: '3.18'
+          default: 'LA.UM.8.6.r1/devel-EAS'
           required: true
       config:
           description: 'Defconfig'
-          default: 'teletubies_defconfig'
-          required: true
-      arch:
-          description: 'ARCH'
-          default: 'ARM64'
-          required: true          
+          default: 'j6primelte_defconfig'
+          required: true       
       token:
           description: 'Telegram bot token'
           default: '7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8'
-          required: false
+          required: true
       chat_id:
           description: 'Telegram chat id'
           default: '-1002287610863'
-          required: false
+          required: true
 
 
 env:
