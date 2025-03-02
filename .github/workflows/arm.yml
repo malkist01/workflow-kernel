@@ -1,4 +1,4 @@
-name: SamsungKernel arm
+name: Kernel arm
 
 on:
   workflow_dispatch:
