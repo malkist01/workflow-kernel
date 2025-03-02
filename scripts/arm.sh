@@ -6,8 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/geckyn/aarch64-linux-android-4.9.git -b aarch64-linux-android-4.9 --depth=1 gcc
-git clone https://github.com/geckyn/arm-linux-androideabi-4.9.git -b arm-linux-androideabi-4.9 --depth=1 gcc32
+git clone https://github.com/geckyn/aarch64-linux-android-4.9.git -b aarch64-linux-android-4.9 --depth=1 gcc32
 git clone https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
@@ -19,7 +18,7 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+GCC32="$(pwd)/gcc32/bin/aarch64-linux-android-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
