@@ -6,7 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/Andromax-Devices/RastaMod69-Clang.git -b 12.0 --depth=1 gcc32
+git clone https://github.com/Andromax-Devices/RastaMod69-Clang.git -b clang-12.0 --depth=1 gcc32
 git clone https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
