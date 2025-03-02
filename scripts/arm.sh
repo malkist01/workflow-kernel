@@ -6,7 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/geckyn/aarch64-linux-android-4.9.git -b aarch64-linux-android-4.9 --depth=1 gcc32
+git clone https://github.com/mvaisakh/gcc-arm.git -b gcc-master --depth=1 gcc32
 git clone https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
@@ -18,7 +18,7 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC32="$(pwd)/gcc32/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-eabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
@@ -76,8 +76,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -C $(pwd) O=out CROSS_COMPILE=arm-linux-androideabi- teletubies_defconfig
-    make -j64 -C $(pwd) O=out CROSS_COMPILE=arm-linux-androideabi-
+    make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
+    make -j64 -C $(pwd) CROSS_COMPILE_ARM32="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
         if ! [ -a "$IMAGE" ]; then
             finerr
             exit 1
