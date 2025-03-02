@@ -6,7 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/Loup-ROM/arm-linux-androideabi-7.x.git -b master --depth=1 gcc32
+git clone https://github.com/Andromax-Devices/RastaMod69-Clang.git -b 12.0 --depth=1 gcc32
 git clone https://github.com/malkist01/AnyKernel3.git -b master --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
@@ -25,7 +25,8 @@ TANGGAL=$(date +'%H%M-%d%m%y')
 JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
-export ARCH=arm
+CC=clang
+export ARCH=arm64
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 # sticker plox
