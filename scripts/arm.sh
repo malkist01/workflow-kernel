@@ -77,7 +77,7 @@ function finerr() {
 # Compile plox
 function compile() {
     make -C $(pwd) O=out CROSS_COMPILE=arm-linux-androideabi- teletubies_defconfig
-make -j64 -C $(pwd) O=out CROSS_COMPILE=arm-linux-androideabi-
+    make -j64 -C $(pwd) O=out CROSS_COMPILE=arm-linux-androideabi-
         if ! [ -a "$IMAGE" ]; then
             finerr
             exit 1
