@@ -76,7 +76,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) -j48 O=out teletubies_defconfig
+    make -s -C $(pwd) -j48 O=out j6primelte_defconfig
     PATH="$(pwd)/clang/bin:${PATH}" \
     make -C $(pwd) CC=${CT} \
             CROSS_COMPILE=${GCC} \
