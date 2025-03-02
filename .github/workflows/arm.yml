@@ -19,6 +19,10 @@ on:
           description: 'Defconfig'
           default: 'teletubies_defconfig'
           required: true
+      arch:
+          description: 'ARCH'
+          default: 'ARM64'
+          required: true          
       token:
           description: 'Telegram bot token'
           default: '7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8'
