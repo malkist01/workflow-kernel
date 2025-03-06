@@ -19,15 +19,14 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
 JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
-export ARCH=arm64
+export ARCH=arm
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 # sticker plox
@@ -79,12 +78,12 @@ function finerr() {
 # Compile plox
 function compile() {
     make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
-    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
+    make -C $(pwd) CROSS_COMPILE_ARM32="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
         if ! [ -a "$IMAGE" ]; then
             finerr
             exit 1
         fi
-    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+    cp out/arch/arm/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
 function zipping() {
