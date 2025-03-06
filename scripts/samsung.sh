@@ -18,7 +18,7 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-4.9-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
