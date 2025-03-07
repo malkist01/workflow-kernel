@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://github.com/malkist01/android_kernel_samsung_msm8917.git  -b main --depth=1 clang
+        git clone https://github.com/malkist01/arm-linux-androideabi-4.9.git  -b main --depth=1 clang
         KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
