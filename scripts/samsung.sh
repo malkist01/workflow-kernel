@@ -4,9 +4,11 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Cloning dependencies"
-git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 --depth=1 gcc
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc32
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc/bin/arm-linux-androideabi-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
@@ -62,7 +64,7 @@ function finerr() {
 # Compile plox
 function compile() {
         make -s -C $(pwd) O=out teletubies_defconfig
-        make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
+        make -C $(pwd) CROSS_COMPILE=${GCC} CROSS_COMPILE=${GCC32} O=out -j32 -l32 2>&1| tee build.log
     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
