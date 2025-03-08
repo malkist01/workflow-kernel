@@ -80,21 +80,19 @@ function finerr() {
 function compile() {
     make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
     make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_COMPAT="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
-        if ! [ -a "$IMAGE" ]; then
-            finerr
-            exit 1
-        fi
+     if ! [ -a "$IMAGE" ]; then
+        finderr
+        exit 1
+    fi
+
+    git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel -b master
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
-function zipping() {
+zipping() {
     cd AnyKernel || exit 1
-    if [ "$is_test" = true ]; then
-        zip -r9 ChipsKernel-GCC-EAS-Alpha-"${TANGGAL}-${SHA}".zip * -x .git README.md *.zip
-    else
-        zip -r9 ChipsKernel-GCC-EAS-"${TANGGAL}-${SHA}".zip * -x .git README.md *.zip
-    fi #ngentod
-    cd .. #well
+    zip -r9 Teletubies-"${CODENAME}"-"${DATE}".zip ./*
+    cd ..
 }
 compile
 zipping
