@@ -4,9 +4,9 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Cloning dependencies"
-git clone https://github.com/kdrag0n/aarch64-elf-gcc -b 9.x --depth=1 gcc
+git clone https://github.com/malkist01/aarch64-linux-android-4.9.git -b main --depth=1 gcc
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-elf-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
