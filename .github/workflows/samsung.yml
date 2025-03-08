@@ -15,14 +15,6 @@ on:
           description: 'Kernel source branch'
           default: '3.18'
           required: true
-      toolchain repo:
-          description: 'Toolchain'
-          default: 'https://github.com/malkist01/J6.git'
-          required: true
-      toolchain branch:
-          description: 'Toolchain branch'
-          default: '3.18'
-          required: true
       token:
           description: 'Telegram bot token'
           default: '7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8'
@@ -38,9 +30,6 @@ env:
   DEVICE: ${{ github.event.inputs.device }}
   REPO: ${{ github.event.inputs.repo }}
   BRANCH: ${{ github.event.inputs.branch }}
-  TOOLCHAIN: ${{ github.event.inputs.toolchain }}
-  TOOLCHAIN BRANCH: ${{ github.event.inputs.toolchain.branch }}
-  GKI: ${{ github.event.inputs.gki }}
   token: ${{ github.event.inputs.token }}
   chat_id: ${{ github.event.inputs.chat_id }}
 
