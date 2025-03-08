@@ -78,7 +78,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
+    make -s -C $(pwd) -j$JOBS O=out j6primelte_defconfig
     make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
         if ! [ -a "$IMAGE" ]; then
             finerr
