@@ -4,7 +4,7 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Cloning dependencies"
-git clone https://github.com/malkist01/aarch64-linux-android-4.9.git -b main --depth=1 gcc
+git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 --depth=1 gcc
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
