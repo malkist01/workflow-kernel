@@ -15,9 +15,13 @@ on:
           description: 'Kernel source branch'
           default: '3.18'
           required: true
-      config:
-          description: 'Defconfig'
-          default: 'teletubies_defconfig'
+      toolchain repo:
+          description: 'Toolchain'
+          default: 'https://github.com/malkist01/J6.git'
+          required: true
+      toolchain branch:
+          description: 'Toolchain branch'
+          default: '3.18'
           required: true
       token:
           description: 'Telegram bot token'
@@ -34,6 +38,8 @@ env:
   DEVICE: ${{ github.event.inputs.device }}
   REPO: ${{ github.event.inputs.repo }}
   BRANCH: ${{ github.event.inputs.branch }}
+  TOOLCHAIN: ${{ github.event.inputs.toolchain }}
+  TOOLCHAIN BRANCH: ${{ github.event.inputs.toolchain.branch }}
   GKI: ${{ github.event.inputs.gki }}
   token: ${{ github.event.inputs.token }}
   chat_id: ${{ github.event.inputs.chat_id }}
