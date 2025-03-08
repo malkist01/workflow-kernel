@@ -6,8 +6,8 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone https://github.com/najahiiii/priv-toolchains -b elf/gcc-10.0.0/arm --depth=1 gcc32
-git clone https://github.com/najahiiii/priv-toolchains -b elf/gcc-10.0.0/arm64 --depth=1 gcc
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror --depth=1 gcc32
+git clone https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-32-mirror --depth=1 gcc
 git clone https://github.com/najahiiii/AnyKernel3.git -b asus --depth=1 AnyKernel
 echo "Done"
 if [ "$is_test" = true ]; then
