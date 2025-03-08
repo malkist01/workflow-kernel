@@ -7,7 +7,6 @@ rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
 git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git gcc32
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -18,7 +17,6 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
@@ -78,7 +76,7 @@ function finerr() {
 # Compile plox
 function compile() {
     make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
-    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_COMPAT="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
+    make -C $(pwd) CROSS_COMPILE_COMPAT="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
     
     if ! [ -a "$IMAGE" ]; then
         finderr
