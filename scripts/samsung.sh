@@ -10,8 +10,8 @@ GCC="$(pwd)/gcc/bin/aarch64-elf-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
-export KBUILD_BUILD_USER=Najahi
-export KBUILD_BUILD_HOST=NusantaraDevs
+export KBUILD_BUILD_USER=malkist
+export KBUILD_BUILD_HOST=android
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -61,7 +61,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        make -s -C $(pwd) O=out rolex_defconfig
+        make -s -C $(pwd) O=out teletubies_defconfig
         make -C $(pwd) CROSS_COMPILE=${GCC} O=out -j32 -l32 2>&1| tee build.log
     if ! [ -a "$IMAGE" ]; then
         finderr
