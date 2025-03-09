@@ -2,7 +2,6 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
-curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s v1.0.3
 echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
