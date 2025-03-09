@@ -7,6 +7,7 @@ rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
 git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
+git clone --depth=1 -b gcc https://github.com/malkist01/arm64.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -17,16 +18,17 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
-IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
 JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
 KCF=-mno-android
-DEF=j6primelte_defconfig
-export ARCH=arm
+DEF=teletubies_defconfig
+export ARCH=arm64
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 # sticker plox
@@ -78,19 +80,19 @@ function finerr() {
 # Compile plox
 function compile() {
     make -s -C $(pwd) -j$JOBS O=out "${DEF}"
-    make -C $(pwd) CROSS_COMPILE_COMPAT="${GCC32}" KCFLAGS="${KCF}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
+    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_COMPAT="${GCC32}" KCFLAGS="${KCF}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
      if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
     fi
 
     git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel -b master
-    cp out/arch/arm/boot/Image.gz-dtb AnyKernel
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Teletubies-Arm"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 Teletubies"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
 compile
