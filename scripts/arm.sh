@@ -6,7 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git gcc32
+git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -24,6 +24,8 @@ TANGGAL=$(date +'%H%M-%d%m%y')
 JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
+KCF=-mno-android
+DEF=teletubies_defconfig
 export ARCH=arm
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
@@ -39,7 +41,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>ChipsKernel CAF EAS</b> CI Triggered%0ABuild started on <code>Drone CI/CD</code>%0AFor device <b>Asus Max Pro M1</b> (X00T/D)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>ChipsKernel CAF EAS</b> CI Triggered%0ABuild started on <code>Drone CI/CD</code>%0AFor device <b>Samsung</b> (J6PRIMELTE)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 10-11)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Send private info
 function sendpriv() {
@@ -75,10 +77,9 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) -j$JOBS O=out teletubies_defconfig
-    make -C $(pwd) CROSS_COMPILE_COMPAT="${GCC32}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
-    
-    if ! [ -a "$IMAGE" ]; then
+    make -s -C $(pwd) -j$JOBS O=out "${DEF}"
+    make -C $(pwd) CROSS_COMPILE_COMPAT="${GCC32}" KCFLAGS="${KCF}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
+     if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
     fi
@@ -89,10 +90,9 @@ function compile() {
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Teletubies-"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 Teletubies-Arm"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
-
 compile
 zipping
 END=$(date +"%s")
