@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://github.com/malkist01/LiuNian-clang.git  -b master --depth=1 clang
+        git clone git@gitlab.com:clangsantoni/zyc_clang.git  -b 10 --depth=1 clang
         KBUILD_COMPILER_STRING=""
         PATH="${PWD}/clang/bin:${PATH}"
     fi
