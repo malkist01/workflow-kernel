@@ -27,8 +27,8 @@ JOBS=$(nproc)
 LOADS=$(nproc)
 START=$(date +"%s")
 export ARCH=arm64
-export KBUILD_BUILD_USER=Najahi
-export KBUILD_BUILD_HOST=NusantaraDevs
+export KBUILD_BUILD_USER=malkist
+export KBUILD_BUILD_HOST=android
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -90,13 +90,11 @@ function compile() {
 # Zipping
 zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Teletubies-"${CODENAME}"-"${DATE}".zip ./*
+    zip -r9 Teletubies"${CODENAME}"-"${DATE}".zip ./*
     cd ..
 }
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
-push
-
 push
