@@ -20,8 +20,8 @@ export USE_CCACHE=1
 export CCACHE_EXEC=/usr/bin/ccache
 ccache -M 20G
 export PATH=$(pwd)/gcc/bin:$PATH
-GCC=aarch64-linux-android-
-GCC32=arm-linux-androideabi-
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc/bin/arm-linux-androideabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
