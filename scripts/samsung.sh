@@ -6,8 +6,8 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git gcc32
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git gcc
+git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
+git clone --depth=1 -b gcc https://github.com/malkist01/arm64.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
