@@ -9,11 +9,11 @@ on:
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
-          default: 'https://github.com/malkist01/android_kernel_msm8917.git'
+          default: 'https://github.com/malkist01/android_kernel_samsung_msm8917_Q.git'
           required: true
       branch:
           description: 'Kernel source branch'
-          default: 'lineage-20ul'
+          default: '3.18'
           required: true
       token:
           description: 'Telegram bot token'
