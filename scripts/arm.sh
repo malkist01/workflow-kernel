@@ -7,7 +7,7 @@ rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
 git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
-git clone --depth=1 -b master https://github.com/malkist01/gcc-4.9-brillio.git gcc
+git clone --depth=1 -b master https://github.com/malkist01/gcc-11.x-aarch64-linux-gnu.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
