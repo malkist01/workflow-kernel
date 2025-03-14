@@ -6,8 +6,8 @@ cd kernel
 git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 gcc-64
 
 export ARCH="arm64"
-export CROSS_COMPILE="gcc-64/bin/aarch64-linux-gnu-"
-export PATH="gcc-64/bin:$PATH"
+export CROSS_COMPILE="$(pwd)/gcc-64/bin/aarch64-linux-gnu-"
+export PATH="$(pwd)/gcc-64/bin:$PATH"
 export KBUILD_BUILD_USER="malkist"
 export KBUILD_BUILD_HOST="android"
 export USE_CCACHE=1
