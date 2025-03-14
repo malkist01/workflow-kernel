@@ -46,20 +46,10 @@ jobs:
           ld --version
           gcc -v
           ar --version
-          sudo apt update 
-          sudo apt upgrade
-sudo apt install nano bc bison ca-certificates curl flex gcc git libc6-dev libssl-dev openssl python-is-python3 ssh wget zip zstd sudo make clang gcc-arm-linux-gnueabi software-properties-common build-essential libarchive-tools gcc-aarch64-linux-gnu
-sudo apt install build-essential
-sudo apt install libssl-dev libffi-dev libncurses5-dev zlib1g zlib1g-dev libreadline-dev libbz2-dev libsqlite3-dev make gcc
-sudo apt install pigz
-sudo apt install python3
-sudo apt install cpio
-sudo apt install lld
-sudo apt install llvm
-sudo apt-get install g++-aarch64-linux-gnu
-sudo apt install libelf-dev
-sudo apt install neofetch 
-neofetch
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang bc bison libssl-dev libfl-dev libncurses5-dev libzstd-dev libtinfo5
+          sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache
+          sudo apt-get install -y zip unzip tar gzip bzip2 rar unrar cpio
 
       - name: Compiling
         run: |
