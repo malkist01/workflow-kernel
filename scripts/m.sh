@@ -36,6 +36,12 @@ zipping() {
     cd AnyKernel || exit 1
     zip -r9 Teletubies"${CODENAME}"-"${DATE}".zip ./*
     cd ..
+compile
+zipping
+END=$(date +"%s")
+DIFF=$(($END - $START))
+push
+
 
 echo "Yeehaa Booooi, Compiling Success!"
 curl -F chat_id="-1002287610863" -F document=@"Teletubies-${tanggal}.zip" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendDocument
