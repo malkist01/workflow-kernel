@@ -6,7 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 gcc-64
+git clone --depth=1 https://github.com/malkist01/clang.git -b master clang
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -21,8 +21,8 @@ SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
 START=$(date +"%s")
-export CROSS_COMPILE="$(pwd)/gcc-64/bin/aarch64-linux-gnu-"
-export PATH="$(pwd)/gcc-64/bin:$PATH"
+export CROSS_COMPILE="$(pwd)/clang/bin/aarch64-linux-gnu-"
+export PATH="$(pwd)/clang/bin:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
@@ -74,6 +74,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+     CC=clang
+     HOSTCC=clang
      make -C $(pwd) O=out teletubies_defconfig
      make -j8 -C $(pwd) O=out
 
