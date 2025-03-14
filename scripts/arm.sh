@@ -6,7 +6,8 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/malkist01/arm64.git -b gcc gcc-64
+git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
+git clone --depth=1 -b gcc https://github.com/malkist01/arm64.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -17,12 +18,16 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
+JOBS=$(nproc)
+LOADS=$(nproc)
 START=$(date +"%s")
-export CROSS_COMPILE="$(pwd)/gcc-64/bin/aarch64-linux-gnu-"
-export PATH="$(pwd)/gcc-64/bin:$PATH"
+KCF=-mno-android
+DEF=teletubies_defconfig
 export ARCH=arm64
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
@@ -56,7 +61,7 @@ function push() {
         -F chat_id="$chat_id" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Samsung J6+</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>ASUS ZENFONE MAX PRO M1 (X00T/D)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
 }
 # Function upload logs to my own server paste
 function paste() {
@@ -74,9 +79,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-     make -C $(pwd) O=out teletubies_defconfig
-     make -j8 -C $(pwd) O=out
-
+    make -s -C $(pwd) -j$JOBS O=out "${DEF}"
+    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_COMPAT="${GCC32}" KCFLAGS="${KCF}" O=out -j$JOBS -l$LOADS 2>&1| tee build.log
      if ! [ -a "$IMAGE" ]; then
         finderr
         exit 1
