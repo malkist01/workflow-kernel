@@ -42,13 +42,7 @@ jobs:
         run: |
           git config --global user.name "malkist01"
           git config --global user.email "aripujiyanto0812@gmail.com"
-          df -h
-          ld --version
-          gcc -v
-          ar --version
-          sudo apt update
-          sudo apt install -y bc bison build-essential ccache curl flex glibc-source g++-multilib gcc-multilib binutils-aarch64-linux-gnu git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-gtk3-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev tmate ssh neofetch
-          neofetch
+apt update -y && apt upgrade -y && apt install nano bc bison ca-certificates curl flex gcc git libc6-dev libssl-dev openssl python-is-python3 ssh wget zip zstd make clang gcc-arm-linux-gnueabi software-properties-common build-essential libarchive-tools gcc-aarch64-linux-gnu -y && apt install build-essential -y && apt install libssl-dev libffi-dev libncurses5-dev zlib1g zlib1g-dev libreadline-dev libbz2-dev libsqlite3-dev make gcc -y && apt install pigz -y && apt install python3 -y && apt install cpio -y && apt install lld -y && apt install llvm -y && apt-get install g++-aarch64-linux-gnu -y && apt install libelf-dev -y && apt install neofetch -y && neofetch
 
       - name: Compiling
         run: |
