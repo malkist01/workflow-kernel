@@ -18,7 +18,7 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC="$(pwd)/gcc/bin/aarch64-maestro-linux-gnu-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
