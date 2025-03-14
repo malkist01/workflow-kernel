@@ -7,7 +7,7 @@ rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
 git clone --depth=1 -b gcc https://github.com/malkist01/arm.git gcc32
-git clone --depth=1 -b Test https://github.com/malkist01/aarch64-maestro-linux-android.git gcc
+git clone --depth=1 -b main https://github.com/malkist01/gnu_gcc-13.git gcc
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -18,7 +18,7 @@ if [ "$is_test" = true ]; then
 else
      echo "Its beta release build"
 fi
-GCC="$(pwd)/gcc/bin/aarch64-maestro-linux-gnu-"
+GCC="$(pwd)/gcc/bin/aarch64-none-elf-"
 GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
