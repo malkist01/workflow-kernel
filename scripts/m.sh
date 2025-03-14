@@ -23,12 +23,22 @@ if [ ! -f output/arch/arm64/boot/Image.gz-dtb ]; then
     curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Fail :(" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
 
 else 
-cp output/arch/arm64/boot/Image.gz-dtb AnyKernel2/zImage
-cd AnyKernel2
-rm -rf *.zip
-zip -r9 CrappyKernel-Liquor-${tanggal}.zip * -x README.md CrappyKernel-Liquor--${tanggal}.zip
+     if ! [ -a "$IMAGE" ]; then
+        finderr
+        exit 1
+    fi
+
+    git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel -b master
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+
+# Zipping
+zipping() {
+    cd AnyKernel || exit 1
+    zip -r9 Teletubies"${CODENAME}"-"${DATE}".zip ./*
+    cd ..
+
 echo "Yeehaa Booooi, Compiling Success!"
-curl -F chat_id="-1002287610863" -F document=@"CrappyKernel-Liquor-${tanggal}.zip" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendDocument
+curl -F chat_id="-1002287610863" -F document=@"Teletubies-${tanggal}.zip" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendDocument
 curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Success :)" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
 curl -F chat_id="-1002287610863" -F text="Whats New ?
 $(git log --oneline --decorate --color --pretty=%s --first-parent -3)" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
