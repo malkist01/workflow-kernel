@@ -5,11 +5,11 @@ cd kernel
 
 git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 gcc-64
 
-export ARCH=arm64
-export CROSS_COMPILE=gcc-64/bin/aarch64-linux-gnu-
-export PATH=gcc-64/bin:$PATH"
-export KBUILD_BUILD_USER=malkist
-export KBUILD_BUILD_HOST=android
+export ARCH="arm64"
+export CROSS_COMPILE="gcc-64/bin/aarch64-linux-gnu-"
+export PATH="gcc-64/bin:$PATH"
+export KBUILD_BUILD_USER="malkist"
+export KBUILD_BUILD_HOST="android"
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 curl -F chat_id="-1002287610863" -F text="Compiling New Commits..." https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
