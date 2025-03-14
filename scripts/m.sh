@@ -2,9 +2,11 @@
 rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
+
             mkdir -p -v $HOME/gcc-64
-            aria2c -o gcc-aarch64.tar.gz https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-linux-gnu/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
+wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-linux-gnu/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
             tar -C $HOME/gcc-64 -zxf gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
+
 make clean distclean mrproper
 export ARCH=arm64
 export CROSS_COMPILE=$HOME/gcc-64/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
