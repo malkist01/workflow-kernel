@@ -46,10 +46,18 @@ jobs:
           ld --version
           gcc -v
           ar --version
-          sudo apt-get update
-          sudo apt-get install -y build-essential clang bc bison libssl-dev libfl-dev libncurses5-dev libzstd-dev libtinfo5
-          sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache
-          sudo apt-get install -y zip unzip tar gzip bzip2 rar unrar cpio
+          sudo apt-get install --no-install-recommends -y gcc-arm-linux-gnueabi gcc-aarch64-linux-gnu lld llvm g++-aarch64-linux-gnu
+         aria2c -q https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh && NONINTERACTIVE=1 bash ./uninstall.sh -f -q
+         if [ -f /bin/swapon ]; then
+             export SWAP_FILE=$(swapon --show=NAME | tail -n 1)
+             sudo swapoff $SWAP_FILE
+             sudo rm $SWAP_FILE
+             sudo fallocate -l 16G $SWAP_FILE
+             sudo chmod 600 $SWAP_FILE
+             sudo mkswap $SWAP_FILE
+             sudo swapon $SWAP_FILE
+             unset SWAP_FILE
+         fi
 
       - name: Compiling
         run: |
