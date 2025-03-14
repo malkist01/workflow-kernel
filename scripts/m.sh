@@ -9,7 +9,7 @@ wget https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch
 
 make clean distclean mrproper
 export ARCH=arm64
-export CROSS_COMPILE=$HOME/gcc-64/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=$HOME/gcc-64/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 export KBUILD_BUILD_USER=ProtoChuz
 export KBUILD_BUILD_HOST=SemaphoreCI
 export USE_CCACHE=1
