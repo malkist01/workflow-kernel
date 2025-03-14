@@ -4,8 +4,8 @@ git clone $REPO -b $BRANCH kernel
 cd kernel
 
             mkdir -p -v $HOME/gcc-64
-wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-linux-gnu/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
-            tar -C $HOME/gcc-64 -zxf gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
+wget https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz
+            tar -C $HOME/gcc-64 -zxf gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz
 
 make clean distclean mrproper
 export ARCH=arm64
