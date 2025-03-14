@@ -53,8 +53,8 @@ jobs:
       - name: Compiling
         run: |
           if [ "${DEVICE}" = "samsung" ]; then
-            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/m.sh
-            bash m.sh
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/arm.sh
+            bash arm.sh
           else
             echo "Device not supported yet"
           fi
