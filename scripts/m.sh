@@ -3,13 +3,13 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 
-git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 "$HOME"/gcc-64
+git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 gcc-64
 
 export ARCH=arm64
-export PATH="$HOME/gcc-64/bin:$PATH"
-export CROSS_COMPILE=$HOME/gcc-64/aarch64-linux-gnu/bin/aarch64-linux-gnu-
-export KBUILD_BUILD_USER=ProtoChuz
-export KBUILD_BUILD_HOST=SemaphoreCI
+export CROSS_COMPILE=gcc/bin/aarch64-linux-gnu-
+export PATH=gcc-64/bin:$PATH"
+export KBUILD_BUILD_USER=malkist
+export KBUILD_BUILD_HOST=android
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 curl -F chat_id="-1002287610863" -F text="Compiling New Commits..." https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
