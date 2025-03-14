@@ -6,6 +6,7 @@ echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning dependencies"
+git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 gcc-64
 echo "Done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
@@ -17,12 +18,12 @@ else
      echo "Its beta release build"
 fi
 SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
-IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
 START=$(date +"%s")
-export CROSS_COMPILE=$(pwd)/gcc/bin/arm-linux-androideabi-
-export PATH="$(pwd)/gcc/bin:$PATH"
-export ARCH=arm
+export CROSS_COMPILE="$(pwd)/gcc-64/bin/aarch64-linux-gnu-"
+export PATH="$(pwd)/gcc-64/bin:$PATH"
+export ARCH=arm64
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
 # sticker plox
@@ -73,8 +74,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-     make O=out ARCH=arm KCFLAGS=-mno-android teletubies_defconfig
-     make O=out ARCH=arm KCFLAGS=-mno-android -j$(nproc --all)
+     make -C $(pwd) O=out teletubies_defconfig
+     make -j8 -C $(pwd) O=out
 
      if ! [ -a "$IMAGE" ]; then
         finderr
@@ -82,7 +83,7 @@ function compile() {
     fi
 
     git clone --depth=1 https://github.com/malkist01/anykernel3.git AnyKernel -b master
-    cp out/arch/arm/boot/Image.gz-dtb AnyKernel
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
 zipping() {
