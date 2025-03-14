@@ -3,12 +3,11 @@ rm -rf kernel
 git clone $REPO -b $BRANCH kernel 
 cd kernel
 
-            mkdir -p -v $HOME/gcc-64
-wget https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz
-            tar -C $HOME/gcc-64 -zxf gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz
+git clone --depth=1 https://github.com/rokibhasansagar/linaro-toolchain-latest.git -b latest-4 "$HOME"/gcc-64
 
 export ARCH=arm64
-export CROSS_COMPILE=$HOME/gcc-64/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+export PATH="$HOME/gcc-64/bin:$PATH"
+export CROSS_COMPILE=$HOME/gcc-64/aarch64-linux-gnu/bin/aarch64-linux-gnu-
 export KBUILD_BUILD_USER=ProtoChuz
 export KBUILD_BUILD_HOST=SemaphoreCI
 export USE_CCACHE=1
