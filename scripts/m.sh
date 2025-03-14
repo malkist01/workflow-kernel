@@ -74,6 +74,14 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+         CC=g++ \
+					  LD=ld \
+					  AR=ar \
+					  AS=as \
+					  NM=nm \
+					  OBJCOPY=objcopy \
+					  OBJDUMP=objdump \
+					  STRIP=strip \
      make -C $(pwd) O=out teletubies_defconfig
      make -j8 -C $(pwd) O=out
 
