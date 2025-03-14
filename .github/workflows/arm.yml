@@ -9,11 +9,11 @@ on:
           required: true
       repo:
           description: 'Kernel source link (dont include . git at the end)'
-          default: 'https://github.com/malkist01/android_kernel_samsung_msm8917.git'
+          default: 'https://github.com/malkist01/J6.git'
           required: true
       branch:
           description: 'Kernel source branch'
-          default: 'los18'
+          default: '3.18'
           required: true
       token:
           description: 'Telegram bot token'
@@ -30,7 +30,6 @@ env:
   DEVICE: ${{ github.event.inputs.device }}
   REPO: ${{ github.event.inputs.repo }}
   BRANCH: ${{ github.event.inputs.branch }}
-  GKI: ${{ github.event.inputs.gki }}
   token: ${{ github.event.inputs.token }}
   chat_id: ${{ github.event.inputs.chat_id }}
 
@@ -54,9 +53,8 @@ jobs:
       - name: Compiling
         run: |
           if [ "${DEVICE}" = "samsung" ]; then
-            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/arm.sh
-            bash arm.sh
+            wget https://raw.githubusercontent.com/malkist01/kernel_build_action/main/scripts/samsung.sh
+            bash samsung.sh
           else
             echo "Device not supported yet"
           fi
-
