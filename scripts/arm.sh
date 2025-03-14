@@ -20,7 +20,7 @@ SHA=$(echo $DRONE_COMMIT_SHA | cut -c 1-8)
 IMAGE=$(pwd)/out/arch/arm/boot/Image.gz-dtb
 TANGGAL=$(date +'%H%M-%d%m%y')
 START=$(date +"%s")
-export CROSS_COMPILE="$(pwd)/gcc/bin/arm-linux-androideabi-"
+export CROSS_COMPILE=$(pwd)/gcc/bin/arm-linux-androideabi-
 export PATH="$(pwd)/gcc/bin:$PATH"
 export ARCH=arm
 export KBUILD_BUILD_USER=malkist
@@ -73,8 +73,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-     make -C $(pwd) O=out teletubies_defconfig
-     make -j8 -C $(pwd) O=out
+     make O=out ARCH=arm KCFLAGS=-mno-android teletubies_defconfig
+     make O=out ARCH=arm KCFLAGS=-mno-android -j$(nproc --all)
 
      if ! [ -a "$IMAGE" ]; then
         finderr
