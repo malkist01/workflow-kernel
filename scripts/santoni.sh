@@ -9,9 +9,11 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://github.com/prabhatKrMishra/android-kernel-tools.git -b tools --depth=1 clang
+        git clone https://github.com/prabhatKrMishra/android-kernel-tools.git -b tools --depth=1
         KBUILD_COMPILER_STRING="Teletubies"
-        PATH="${PWD}/clang/bin:${PATH}"
+        PATH="$(pwd)/tools/clang/host/linux-x86/clang-r416183b/bin:$PATH"
+        export LD_LIBRARY_PATH="$(pwd)/tools/clang/host/linux-x86/clang-r416183b/lib64:$LD_LIBRARY_PATH"
+
     fi
     sudo apt install -y ccache
     echo "Done"
@@ -21,6 +23,11 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_DIR=$(pwd)
+export ARCH=arm64
+export SUBARCH=ARM64
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CROSS_COMPILE=aarch64-linux-android-
+export CROSS_COMPILE_ARM32=arm-linux-androideabi-
 CACHE=1
 export CACHE
 export KBUILD_COMPILER_STRING
@@ -108,9 +115,9 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         CC=clang \
-        CLANG_TRIPLE=aarch64-linux-gnu- \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+        CLANG_TRIPLE=aarch64-linux-android- \
+        CROSS_COMPILE=aarch64-linux-android- \
+CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
     if ! [ -a "$IMAGE" ]; then
         finderr
