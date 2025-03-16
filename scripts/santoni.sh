@@ -9,7 +9,7 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://github.com/malkist01/azure-clang.git -b masrer --depth=1 clang
+        git clone https://github.com/malkist01/proton-clang.git -b proton-clang-11 --depth=1 clang
         KBUILD_COMPILER_STRING="Teletubies"
         PATH="${PWD}/clang/bin:${PATH}"
     fi
