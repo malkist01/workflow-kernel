@@ -9,10 +9,9 @@ clang() {
     rm -rf clang
     echo "Cloning clang"
     if [ ! -d "clang" ]; then
-        git clone https://github.com/prabhatKrMishra/android-kernel-tools.git -b tools --depth=1
+        git clone https://github.com/RyuujiX/SDClang.git -b 14 --depth=1 clang
         KBUILD_COMPILER_STRING="Teletubies"
-        PATH="$(pwd)/tools/clang/host/linux-x86/clang-r416183b/bin:$PATH"
-        export LD_LIBRARY_PATH="$(pwd)/tools/clang/host/linux-x86/clang-r416183b/lib64:$LD_LIBRARY_PATH"
+        PATH="$(pwd)/clang/aarch64-linux-gnu/bin:$PATH"
 
     fi
     sudo apt install -y ccache
@@ -26,8 +25,9 @@ KERNEL_DIR=$(pwd)
 export ARCH=arm64
 export SUBARCH=ARM64
 export CLANG_TRIPLE=aarch64-linux-gnu-
-export CROSS_COMPILE=aarch64-linux-android-
-export CROSS_COMPILE_ARM32=arm-linux-androideabi-
+export CROSS_COMPILE=aarch64-linux-
+gnu-
+export CROSS_COMPILE_ARM32=armv7-linux-gnueabi-
 CACHE=1
 export CACHE
 export KBUILD_COMPILER_STRING
@@ -115,9 +115,9 @@ compile() {
     make -j"${PROCS}" O=out \
         ARCH=$ARCH \
         CC=clang \
-        CLANG_TRIPLE=aarch64-linux-android- \
-        CROSS_COMPILE=aarch64-linux-android- \
-CROSS_COMPILE_ARM32=arm-linux-androideabi-
+        CLANG_TRIPLE=aarch64-linux-gnu- \
+        CROSS_COMPILE=aarch64-linux-gnu- \
+CROSS_COMPILE_ARM32=armv7-linux-gnueabi-
 
     if ! [ -a "$IMAGE" ]; then
         finderr
