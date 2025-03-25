@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-rm -rf kernel
-git clone $REPO -b $BRANCH kernel 
-cd kernel
 echo "Nuke previous toolchains"
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
